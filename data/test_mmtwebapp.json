@@ -1,0 +1,19 @@
+{
+    "data": [
+        {
+            "link" : "https://www.makemytrip.com/",
+            "email" : "singhaadarsh2003@gmail.com",
+            "firthredig" : "ind",
+            "country_name" : "India",
+            "mobile_number" : "7905806379",
+            "trip_type" : "One_way",
+            "from_city" : "Varanasi",
+            "to_city" : "Bengaluru",
+            "departure_date" : "15 Dec 2025",
+            "return_date":"15 Dec 2025",
+            "number_of_adult_traveller" : "2",
+            "numer_of_childrens_traveller":"1",
+            "number_of_infants":"2"
+        }
+    ]
+}
