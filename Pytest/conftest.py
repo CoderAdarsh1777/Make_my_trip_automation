@@ -73,17 +73,33 @@ def browserinvoke(request):
 #         # pytest-html not being used; ignore
 #         pass
 
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+SCREENSHOT_DIR = os.path.join(PROJECT_ROOT, "reports", "screenshots")
+
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
 
     if rep.when == "call" and rep.failed:
-        driver = item.funcargs.get("driver")
+
+        driver = (
+            item.funcargs.get("browserinvoke")
+            or item.funcargs.get("driver")
+        )
+
         if driver:
-            file_path = os.path.join("screenshots", f"{item.name}.png")
+            os.makedirs(SCREENSHOT_DIR, exist_ok=True)
+
+            filename = f"{item.name}.png"
+            file_path = os.path.join(SCREENSHOT_DIR, filename)
+
             driver.save_screenshot(file_path)
+
+            extra = extras.image(file_path)
             if hasattr(rep, "extra"):
-                rep.extra.append(extras.image(file_path))
+                rep.extra.append(extra)
+            else:
+                rep.extra = [extra]
 
 

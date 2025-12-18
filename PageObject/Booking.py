@@ -33,12 +33,12 @@ class Booking:
     
     def count_of_traveller(self, number_of_adult_traveller, number_of_childrens_travellers, number_of_infants, Travel_class):
         self.driver.find_element(*self.number_of_traveller).click()
-        for class_type, class_value in Travel_class.items():
-            if class_value == "1":
-                self.driver.find_element(By.XPATH, f"//ul[@class='guestCounter classSelect font12 darkText']/li[text()='{class_type}']").click()
         self.driver.find_element(By.XPATH, f"//li[@data-cy='adults-{number_of_adult_traveller}']").click()
         self.driver.find_element(By.XPATH, f"//li[@data-cy='children-{number_of_childrens_travellers}']").click()
         self.driver.find_element(By.XPATH, f"//li[@data-cy='infants-{number_of_infants}']").click()
+        # for class_type, class_value in Travel_class.items():
+        #     if class_value == "1":
+        #         self.driver.find_element(By.XPATH, f"//ul[@class='guestCounter classSelect font12 darkText']/li[text()='{class_type}']").click()
         self.driver.find_element(*self.traveller_apply).click()
     
     def from_city(self, cityname):
@@ -122,14 +122,21 @@ class Booking:
             self.driver.find_element(*self.multicity).click()
         for cust_type, select in customer_type.items():
             if select == "1":
-                self.driver.find_element(By.XPATH, f"//div[@class='fareCardItem']/div/div[1][text()='{cust_type}']").click()
+                try:
+                    self.wait.until_not(expected_conditions.presence_of_element_located((By.CLASS_NAME, "hsBackDrop")))
+                except:
+                    pass
+                element = self.driver.find_element(By.XPATH, f"//div[@class='fareCardItem']/div/div[1][text()='{cust_type}']")
+                self.driver.execute_script("arguments[0].click();", element)
         self.driver.find_element(*self.search_button).click()
         self.simops.remove_all_blockers()
         flight_names = self.wait.until(expected_conditions.presence_of_all_elements_located(self.flight_name))
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        available_fight_names = []
         if flight_names is None:
             print("No flights available for the selected route and dates.")
         else:
             for flight in flight_names:
-                print("Available flight:", flight.text)
+                available_fight_names.append(flight.text)
+            print("Available flights:", available_fight_names)
         
