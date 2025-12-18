@@ -30,6 +30,14 @@ class Booking:
         self.traveller_apply = (By.XPATH, "//button[@data-cy='travellerApplyBtn']")
         self.search_button = (By.XPATH, "//p[@data-cy='submit']/a")
         self.flight_name = (By.XPATH, "//p[@class='boldFont blackText airlineName']")
+        self.flight_codes = (By.XPATH, "//p[@class='fliCode']")
+        self.flights_departure_time = (By.XPATH, "//div[@class='flexOne timeInfoLeft']/p[1]/span")
+        self.flights_arrival_time = (By.XPATH, "//div[@class='flexOne timeInfoRight']/p[1]/span")
+        self.flight_onboarding_location = (By.XPATH, "//div[@class='flexOne timeInfoLeft']/p[2]/font")
+        self.flight_deboarding_location = (By.XPATH, "//div[@class='flexOne timeInfoRight']/p[2]/font")
+        self.flight_fare_details = (By.XPATH, "//div[@data-test='component-fare']/span")
+        self.total_flight_time = (By.XPATH, "//div[@class='stop-info flexOne']/p")
+        self.flight_stops = (By.XPATH, "//p[@class='flightsLayoverInfo']")
     
     def count_of_traveller(self, number_of_adult_traveller, number_of_childrens_travellers, number_of_infants, Travel_class):
         self.driver.find_element(*self.number_of_traveller).click()
@@ -96,11 +104,26 @@ class Booking:
             xpath = f"//div[contains(@aria-label,'{ret_date}')]//div[@class='dateInnerCell']"
             ele = self.wait.until(expected_conditions.element_to_be_clickable((By.XPATH, xpath)))
             self.driver.execute_script("arguments[0].click();", ele)
+    
+    def slow_scroll_to_bottom(self):
+        last_height = 0
+        while True:
+            self.driver.execute_script("window.scrollBy(0, document.body.scrollHeight);")
+            time.sleep(2)
+            new_height = self.driver.execute_script("return document.body.scrollHeight")
+            if new_height == last_height:
+                break
+            last_height = new_height
             
     def Booking_for_travel(self, type_of_trip, from_city_name, to_city_name, departure_date, return_date,number_of_adult_traveller, number_of_childrens_travellers, number_of_infants, Travel_class, customer_type):
         # wait = WebDriverWait(self.driver, 15)
         time.sleep(2)
         self.simops.remove_all_blockers()  # Should be removed once the login system is active
+        time.sleep(5)
+        try:
+            self.driver.find_element(By.XPATH, "//span[@class='coachmark']").click()
+        except:
+            pass
         # wait.until(expected_conditions.element_to_be_clickable(self.flight_icon)).click()
         if type_of_trip == "One_way":
             self.driver.find_element(*self.one_way).click()
@@ -129,14 +152,25 @@ class Booking:
                 element = self.driver.find_element(By.XPATH, f"//div[@class='fareCardItem']/div/div[1][text()='{cust_type}']")
                 self.driver.execute_script("arguments[0].click();", element)
         self.driver.find_element(*self.search_button).click()
-        self.simops.remove_all_blockers()
+        time.sleep(5)
+        try:
+            self.driver.find_element(By.XPATH, "//button[@class='okayButton fontSize16']").click()
+        except:
+            pass
+        time.sleep(5)
+        self.slow_scroll_to_bottom()
         flight_names = self.wait.until(expected_conditions.presence_of_all_elements_located(self.flight_name))
-        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        available_fight_names = []
+        flight_codes = self.driver.find_elements(*self.flight_codes)
+        flight_departure_times = self.driver.find_elements(*self.flights_departure_time)
+        flight_arrival_times = self.driver.find_elements(*self.flights_arrival_time)
+        flight_departure_locations = self.driver.find_elements(*self.flight_onboarding_location)
+        flight_arrival_locations = self.driver.find_elements(*self.flight_deboarding_location)
+        flight_time = self.driver.find_elements(*self.total_flight_time)
+        flight_fares = self.driver.find_elements(*self.flight_fare_details)
+        flight_stops = self.driver.find_elements(*self.flight_stops)
+
         if flight_names is None:
             print("No flights available for the selected route and dates.")
         else:
-            for flight in flight_names:
-                available_fight_names.append(flight.text)
-            print("Available flights:", available_fight_names)
-        
+            for name, code, dep_time, arr_time, dep_loc, arr_loc, flight_time, flight_stops, fare in zip(flight_names, flight_codes, flight_departure_times, flight_arrival_times, flight_departure_locations, flight_arrival_locations, flight_time, flight_stops, flight_fares):
+                print(f"Flight Name: {name.text}, Flight Code: {code.text}, Departure Time: {dep_time.text}, Arrival Time: {arr_time.text}, Departure Location: {dep_loc.text}, Arrival Location: {arr_loc.text}, Total Flight Time: {flight_time.text}, Stops: {flight_stops.text}, Fare: {fare.text}")
