@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions
 from datetime import datetime
 import time
 from Utils.commonmethods import common
+from openpyxl import Workbook
 
 class Booking:
 
@@ -114,6 +115,17 @@ class Booking:
             if new_height == last_height:
                 break
             last_height = new_height
+    
+    def write_flight_data_to_excel(self, flight_data, filename="flight_data.xlsx"):
+        Wb = Workbook()
+        sheet = Wb.active
+        sheet.title = "Flight Data"
+        headers = ["Flight Name", "Flight Code", "Departure Time", "Arrival Time", "Departure Location", "Arrival Location", "Total Flight Time", "Stops", "Fare"]
+        sheet.append(headers)
+        for row in flight_data:
+            sheet.append(row)
+        Wb.save(filename)
+        print(f"Flight data written to {filename} successfully.")
             
     def Booking_for_travel(self, type_of_trip, from_city_name, to_city_name, departure_date, return_date,number_of_adult_traveller, number_of_childrens_travellers, number_of_infants, Travel_class, customer_type):
         # wait = WebDriverWait(self.driver, 15)
@@ -169,8 +181,15 @@ class Booking:
         flight_fares = self.driver.find_elements(*self.flight_fare_details)
         flight_stops = self.driver.find_elements(*self.flight_stops)
 
+        all_flight_data = []
+
         if flight_names is None:
             print("No flights available for the selected route and dates.")
         else:
             for name, code, dep_time, arr_time, dep_loc, arr_loc, flight_time, flight_stops, fare in zip(flight_names, flight_codes, flight_departure_times, flight_arrival_times, flight_departure_locations, flight_arrival_locations, flight_time, flight_stops, flight_fares):
-                print(f"Flight Name: {name.text}, Flight Code: {code.text}, Departure Time: {dep_time.text}, Arrival Time: {arr_time.text}, Departure Location: {dep_loc.text}, Arrival Location: {arr_loc.text}, Total Flight Time: {flight_time.text}, Stops: {flight_stops.text}, Fare: {fare.text}")
+
+                flight_data = [name.text, code.text, dep_time.text, arr_time.text, dep_loc.text, arr_loc.text, flight_time.text, flight_stops.text, fare.text]
+
+                all_flight_data.append(flight_data)
+            
+            self.write_flight_data_to_excel(all_flight_data)

@@ -19,13 +19,13 @@ def test_e2e(browserinvoke, test_list_item):
 
     # Login function
 
-    # logintoweb = Login(driver)
+    logintoweb = Login(driver)
 
-    # choice = input("Which Login meethod do you want to use? (1- Email, 2- Mobile Number): ")
-    # if choice == "1":
-    #     logintoweb.login_by_email(test_list_item["email"])
-    # elif choice == "2":
-    #     logintoweb.login_by_mobile_number(test_list_item["firthredig"], test_list_item["country_name"], test_list_item["mobile_number"])
+    choice = input("Which Login meethod do you want to use? (1- Email, 2- Mobile Number): ")
+    if choice == "1":
+        logintoweb.login_by_email(test_list_item["email"])
+    elif choice == "2":
+        logintoweb.login_by_mobile_number(test_list_item["firthredig"], test_list_item["country_name"], test_list_item["mobile_number"])
     
     # Booking function
 
