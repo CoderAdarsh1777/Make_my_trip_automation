@@ -9,11 +9,25 @@
             "trip_type" : "One_way",
             "from_city" : "Varanasi",
             "to_city" : "Bengaluru",
-            "departure_date" : "15 Dec 2025",
-            "return_date":"15 Dec 2025",
+            "departure_date" : "20 Dec 2025",
+            "return_date":"20 Dec 2025",
             "number_of_adult_traveller" : "2",
-            "numer_of_childrens_traveller":"1",
-            "number_of_infants":"2"
+            "numer_of_childrens_traveller":"0",
+            "number_of_infants":"0",
+            "Travel_class":{
+                "Economy/Premium Economy" : "0",
+                "Premium Economy" : "1",
+                "Business" : "0",
+                "First Class" : "0"
+            },
+            "customer_type": {
+                "Regular" : "0",
+                "Travelling for work?" : "0",
+                "Student" : "1",
+                "Armend Forces" : "0",
+                "Senior Citizen" : "0",
+                "Doctor and Nurses" : "0"
+            }
         }
     ]
 }

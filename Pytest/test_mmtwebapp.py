@@ -30,6 +30,6 @@ def test_e2e(browserinvoke, test_list_item):
     # Booking function
 
     booking_trip = Booking(driver)
-    booking_trip.Booking_for_travel(test_list_item["trip_type"], test_list_item["from_city"], test_list_item["to_city"], test_list_item["departure_date"], test_list_item["return_date"],test_list_item["number_of_adult_traveller"], test_list_item["numer_of_childrens_traveller"], test_list_item["number_of_infants"])
+    booking_trip.Booking_for_travel(test_list_item["trip_type"], test_list_item["from_city"], test_list_item["to_city"], test_list_item["departure_date"], test_list_item["return_date"],test_list_item["number_of_adult_traveller"], test_list_item["numer_of_childrens_traveller"], test_list_item["number_of_infants"], test_list_item["Travel_class"],test_list_item["customer_type"])
 
     time.sleep(5)
