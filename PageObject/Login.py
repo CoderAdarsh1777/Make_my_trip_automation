@@ -39,13 +39,14 @@ class Login:
                 country.click()
                 break
         self.driver.find_element(*self.mobile_number).send_keys(mobilenumber)
+        time.sleep(2)
         self.driver.find_element(*self.countinue_button).click()
         # element = self.driver.find_element(*self.countinue_button)
         # self.driver.execute_script("arguments[0].click();", element)
         self.handle_otp()
         time.sleep(5)
         wait.until(expected_conditions.element_to_be_clickable(self.login_btn)).click()
-        wait.until(expected_conditions.presence_of_element_located(self.pop_up_close)).click()
+        # wait.until(expected_conditions.presence_of_element_located(self.pop_up_close)).click()
     
     def login_by_email(self, emailid):
         wait = WebDriverWait(self.driver, 20)

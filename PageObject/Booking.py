@@ -128,21 +128,23 @@ class Booking:
         print(f"Flight data written to {filename} successfully.")
             
     def Booking_for_travel(self, type_of_trip, from_city_name, to_city_name, departure_date, return_date,number_of_adult_traveller, number_of_childrens_travellers, number_of_infants, Travel_class, customer_type):
-        # wait = WebDriverWait(self.driver, 15)
-        time.sleep(2)
-        self.simops.remove_all_blockers()  # Should be removed once the login system is active
         time.sleep(5)
         try:
-            self.driver.find_element(By.XPATH, "//span[@class='coachmark']").click()
+            self.driver.find_element(By.XPATH, "//span[@class='coachmark']").click()     
         except:
             pass
-        # wait.until(expected_conditions.element_to_be_clickable(self.flight_icon)).click()
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(expected_conditions.element_to_be_clickable(self.flight_icon)).click()
         if type_of_trip == "One_way":
             self.driver.find_element(*self.one_way).click()
             self.simops.remove_overlays()
             self.from_city(from_city_name)
             self.to_city(to_city_name)
             self.date_selector_for_trips(type_of_trip, departure_date, return_date=None)
+            try:
+                self.driver.find_element(By.XPATH, "//div[@class='tp-dt-enhanced-floating-cta ']").click()
+            except:
+                pass
             time.sleep(2)
             self.count_of_traveller(number_of_adult_traveller, number_of_childrens_travellers, number_of_infants, Travel_class)
         elif type_of_trip == "Round_trip":
