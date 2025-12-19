@@ -15,8 +15,8 @@
             "numer_of_childrens_traveller":"0",
             "number_of_infants":"0",
             "Travel_class":{
-                "Economy/Premium Economy" : "0",
-                "Premium Economy" : "1",
+                "Economy/Premium Economy" : "1",
+                "Premium Economy" : "0",
                 "Business" : "0",
                 "First Class" : "0"
             },
