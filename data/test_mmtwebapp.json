@@ -2,10 +2,10 @@
     "data": [
         {
             "link" : "https://www.makemytrip.com/",
-            "email" : "singhaadarsh2003@gmail.com",
+            "email" : "Enter your email id here",
             "firthredig" : "ind",
             "country_name" : "India",
-            "mobile_number" : "7268088958",
+            "mobile_number" : "Enter your phone number here",
             "trip_type" : "One_way",
             "from_city" : "Varanasi",
             "to_city" : "Bengaluru",
